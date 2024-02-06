@@ -1,3 +1,7 @@
+'use client';
+
+import HomePage from '../containers/home';
+
 export default function Home() {
-  return <h1>Hello World</h1>;
+  return <HomePage />;
 }
