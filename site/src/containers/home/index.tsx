@@ -11,20 +11,33 @@ import RecentsProductsComponent from '../../components/recents-products';
 import ProductsWithDiscountComponent from '../../components/products-with-discount';
 import EmphasisComponent from '../../components/emphasis';
 
-import { products } from '../../database/products';
+import { ProductsProps } from '../../types/products-props';
 
 const HomePage = () => {
   const [searchProduct, setSearchProduct] = useState('');
   const [select, setSelect] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [products, setProducts] = useState<ProductsProps[]>([]);
 
-  const { systemTheme, theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { push } = useRouter();
+
+  const fetchDatas = async () => {
+    const response = await fetch('http://localhost:3000/api/products');
+
+    const data = await response.json();
+
+    setProducts(data.data);
+  };
+
+  useEffect(() => {
+    fetchDatas();
+  }, []);
 
   const productFiltered =
     searchProduct.length > 0
       ? products.filter((product) =>
-          product.productName.includes(
+          product.product_name.includes(
             searchProduct.replace(/(?:^|\s)(?!da|de|do)\S/g, (l) =>
               l.toUpperCase(),
             ),
@@ -33,7 +46,7 @@ const HomePage = () => {
       : [];
 
   const handleSelect = (option: string) => {
-    push(`/produtos?categoria=${option}`);
+    push(`/produto?categoria=${option}`);
 
     setSelect(option);
   };
@@ -146,7 +159,7 @@ const HomePage = () => {
                   <p className="flex justify-center items-center font-semibold">
                     {' '}
                     <IoIosShirt size={32} className="mr-2" />
-                    {product.productName}
+                    {product.product_name}
                   </p>{' '}
                   <p>
                     {product.price.toLocaleString('pt-BR', {

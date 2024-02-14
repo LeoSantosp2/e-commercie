@@ -1,3 +1,5 @@
+'use client';
+
 import LoginPage from '../../containers/login';
 
 export default function Login() {

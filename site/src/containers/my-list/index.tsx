@@ -4,12 +4,12 @@ import { toast } from 'react-toastify';
 
 import HeaderComponent from '../../components/header';
 
-import { ProductProps } from '../../types/product-props';
+import { ProductsProps } from '../../types/products-props';
 
 const WishListPage = () => {
-  const [products, setProduct] = useState<ProductProps[]>([]);
+  const [products, setProduct] = useState<ProductsProps[]>([]);
 
-  const handleDeleteProduct = (id: number) => {
+  const handleDeleteProduct = (id: string) => {
     const datas = products.filter((product) => product.id !== id);
 
     localStorage.setItem('my-list', JSON.stringify(datas));
@@ -36,7 +36,7 @@ const WishListPage = () => {
       <HeaderComponent />
 
       <main className="w-full py-4">
-        {products.map((product: ProductProps) => (
+        {products.map((product: ProductsProps) => (
           <div
             key={product.id}
             className="w-3/4 h-52 my-4 mx-auto rounded-lg flex items-center border shadow-lg relative"
@@ -46,9 +46,9 @@ const WishListPage = () => {
             </div>
 
             <div className="w-1/2 h-full p-2 flex justify-between flex-col text-justify">
-              <h1 className="text-2xl font-semibold">{product.productName}</h1>
+              <h1 className="text-2xl font-semibold">{product.product_name}</h1>
 
-              <p>{product.productDescription}</p>
+              <p>{product.product_description}</p>
 
               <p className="font-semibold">
                 {product.price.toLocaleString('pt-BR', {

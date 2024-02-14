@@ -10,25 +10,31 @@ import {
 import { IoIosShirt } from 'react-icons/io';
 import { PiPantsFill } from 'react-icons/pi';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
-
-import { products } from '../../database/products';
+import { useState, useEffect } from 'react';
 
 import HeaderComponent from '../../components/header';
 
-import { Product } from '../../types/product-props';
+import { ProductId } from '../../types/product-props';
+import { ProductsProps } from '../../types/products-props';
 
-const ProductPage = ({ id }: Product) => {
+const ProductPage = ({ id }: ProductId) => {
   const [qtd, setQtd] = useState('1');
+  const [product, setProduct] = useState<ProductsProps[]>([]);
 
-  const newProduct = products.filter((product) => product.id === id);
+  const fetchDatas = async () => {
+    const response = await fetch(`http://localhost:3000/api/products/${id}`);
+
+    const data = await response.json();
+
+    setProduct(data.data);
+  };
 
   const handleAddList = () => {
     const response = localStorage.getItem('my-list');
 
     const datas = response ? JSON.parse(response) : [];
 
-    const newDatas = [...datas, newProduct[0]];
+    const newDatas = [...datas, product[0]];
 
     localStorage.setItem('my-list', JSON.stringify(newDatas));
 
@@ -41,11 +47,11 @@ const ProductPage = ({ id }: Product) => {
     const datas = response ? JSON.parse(response) : [];
 
     const newData = {
-      id: newProduct[0].id,
-      productName: newProduct[0].productName,
-      productDescription: newProduct[0].productDescription,
-      price: newProduct[0].price * Number(qtd),
-      category: newProduct[0].category,
+      id: product[0].id,
+      productName: product[0].product_name,
+      productDescription: product[0].product_description,
+      price: product[0].price * Number(qtd),
+      category: product[0].category,
       qtd: qtd,
     };
 
@@ -56,17 +62,17 @@ const ProductPage = ({ id }: Product) => {
     toast.success('produto adicionado ao carrinho com sucesso.');
   };
 
+  useEffect(() => {
+    fetchDatas();
+  }, []);
+
   return (
     <>
-      <head>
-        <title>{newProduct[0].productName}</title>
-      </head>
-
       <HeaderComponent />
 
       <main className="w-full">
         <div className="flex justify-around">
-          {newProduct.map((product) => (
+          {product.map((product) => (
             <div
               key={product.id}
               className="size-96 rounded-lg flex justify-center items-center bg-tertiary"
@@ -97,14 +103,14 @@ const ProductPage = ({ id }: Product) => {
             </div>
           ))}
 
-          {newProduct.map((product) => (
+          {product.map((product) => (
             <div
               key={product.id}
               className="w-1/4 flex flex-col justify-between"
             >
-              <h1 className="font-bold text-3xl">{product.productName}</h1>
+              <h1 className="font-bold text-3xl">{product.product_name}</h1>
 
-              <p>{product.productDescription}</p>
+              <p>{product.product_description}</p>
 
               <p className="text-lg font-semibold">
                 {product.price.toLocaleString('pt-BR', {
@@ -116,7 +122,7 @@ const ProductPage = ({ id }: Product) => {
           ))}
 
           <div className="w-60 p-2 flex flex-col rounded-lg border shadow-xl text-center relative">
-            {newProduct.map((product) => (
+            {product.map((product) => (
               <p key={product.id} className="text-lg text-left font-semibold">
                 {product.price.toLocaleString('pt-BR', {
                   style: 'currency',

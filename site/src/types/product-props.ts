@@ -7,6 +7,6 @@ export type ProductProps = {
   qtd?: string;
 };
 
-export type Product = {
-  id: number;
+export type ProductId = {
+  id: string;
 };

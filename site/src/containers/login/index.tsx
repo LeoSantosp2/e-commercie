@@ -1,6 +1,11 @@
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useState } from 'react';
+
 import HeaderComponent from '../../components/header';
 
 const LoginPage = () => {
+  const [hiddenPassword, setHiddenPassword] = useState(true);
+
   return (
     <div className="size-full">
       <head>
@@ -26,11 +31,31 @@ const LoginPage = () => {
                 className="w-full mb-5 p-2 rounded-lg outline-none bg-primary text-secondary placeholder-secondary"
               />
 
-              <input
-                type="password"
-                placeholder="Senha"
-                className="w-full mr-2 p-2 rounded-lg outline-none bg-primary text-secondary placeholder-secondary"
-              />
+              <div className="w-full h-10 mr-2 rounded-lg bg-primary flex ">
+                <input
+                  type={hiddenPassword ? 'password' : 'text'}
+                  placeholder="Senha"
+                  className="w-11/12 h-full pl-2 outline-none rounded-s-lg bg-transparent text-secondary placeholder-secondary"
+                />
+
+                <div className="w-1/12 h-full rounded-e-lg flex justify-center items-center">
+                  {hiddenPassword ? (
+                    <FaEye
+                      size={24}
+                      color="#121212"
+                      className="cursor-pointer"
+                      onClick={() => setHiddenPassword(!hiddenPassword)}
+                    />
+                  ) : (
+                    <FaEyeSlash
+                      size={25}
+                      color="#121212"
+                      className="cursor-pointer"
+                      onClick={() => setHiddenPassword(!hiddenPassword)}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="w-full flex justify-center items-center">

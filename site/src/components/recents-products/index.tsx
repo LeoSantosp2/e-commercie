@@ -1,15 +1,36 @@
 import { IoIosShirt } from 'react-icons/io';
 import { PiPantsFill } from 'react-icons/pi';
 import { GiLargeDress, GiMonclerJacket } from 'react-icons/gi';
+import { useState, useEffect } from 'react';
 
-import { recents } from '../../database/recents';
+import { ProductsProps } from '../../types/products-props';
 
 const RecentsProductsComponent = () => {
+  const [products, setProducts] = useState<ProductsProps[]>([]);
+
+  const fetchDatas = async () => {
+    const response = await fetch('http://localhost:3000/api/products');
+
+    const data = await response.json();
+
+    const newProducts = [];
+
+    for (let i = 0; i < 3; i++) {
+      newProducts.push(data.data[Math.floor(Math.random() * data.data.length)]);
+    }
+
+    setProducts(newProducts);
+  };
+
+  useEffect(() => {
+    fetchDatas();
+  }, []);
+
   return (
     <>
       <h1 className="mx-8 text-3xl">Recentes</h1>
       <div className="w-full py-20 px-20 flex flex-wrap justify-center">
-        {recents.map((product) => (
+        {products.map((product) => (
           <a
             key={product.id}
             href={`/produto/${product.id}`}
@@ -35,10 +56,10 @@ const RecentsProductsComponent = () => {
               </div>
 
               <p className="text-center my-5 font-semibold">
-                {product.productName}
+                {product.product_name}
               </p>
 
-              <p className="text-center">{product.productDescription}</p>
+              <p className="text-center">{product.product_description}</p>
             </div>
           </a>
         ))}

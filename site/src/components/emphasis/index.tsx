@@ -1,10 +1,31 @@
 import { GiLargeDress, GiMonclerJacket, GiSkirt, GiWool } from 'react-icons/gi';
 import { IoIosShirt } from 'react-icons/io';
 import { PiPantsFill } from 'react-icons/pi';
+import { useState, useEffect } from 'react';
 
-import { emphasis } from '../../database/emphasis';
+import { ProductsProps } from '../../types/products-props';
 
 const EmphasisComponent = () => {
+  const [emphasis, setEmphasis] = useState<ProductsProps[]>([]);
+
+  const fetchDatas = async () => {
+    const response = await fetch('http://localhost:3000/api/products');
+
+    const data = await response.json();
+
+    const products = [];
+
+    for (let i = 0; i < 6; i++) {
+      products.push(data.data[Math.floor(Math.random() * data.data.length)]);
+    }
+
+    setEmphasis(products);
+  };
+
+  useEffect(() => {
+    fetchDatas();
+  }, []);
+
   return (
     <div className="mt-40 mb-40">
       <h1 className="mx-8 text-3xl">Destaques</h1>
@@ -40,10 +61,10 @@ const EmphasisComponent = () => {
               </div>
 
               <p className="text-center my-5 font-semibold">
-                {product.productName}
+                {product.product_name}
               </p>
 
-              <p className="text-center">{product.productDescription}</p>
+              <p className="text-center">{product.product_description}</p>
             </div>
           </a>
         ))}

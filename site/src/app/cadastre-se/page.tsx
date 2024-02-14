@@ -1,3 +1,5 @@
+'use client';
+
 import RegisterPage from '../../containers/register';
 
 export default function Register() {
