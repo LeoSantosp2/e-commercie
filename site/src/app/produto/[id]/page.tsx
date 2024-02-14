@@ -1,15 +1,17 @@
 import ProductPage from '../../../containers/product';
 
-import { products } from '../../../database/products';
+import axios from '../../../services/axios';
 
-import { Product } from '../../../types/product-props';
+import { ProductsProps } from '../../../types/products-props';
 
 export default function Product({ params }: { params: { id: string } }) {
-  return <ProductPage id={Number(params.id)} />;
+  return <ProductPage id={params.id} />;
 }
 
-export const generateStaticParams = () => {
-  return products.map((product) => {
+export const generateStaticParams = async () => {
+  const response = await axios.get('/products');
+
+  return response.data.map((product: ProductsProps) => {
     product.id;
   });
 };
