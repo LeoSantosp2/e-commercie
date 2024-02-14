@@ -7,6 +7,6 @@ Pay Commercie é um projeto de e-commercie onde, eu criei para exercitar minhas 
 
 ## Frameworks
 - Front-end feito em NextJs.
-- API será feita com o bun.
-- Banco de Dados que será usado, é o MySQL.
+- API feita com o bun.
+- Banco de Dados é o MySQL. Rodando no Docker em uma VM local.
  
