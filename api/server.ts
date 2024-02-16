@@ -11,7 +11,7 @@ const corsHeaders = {
 const allowedOrigins = ['http://localhost:3000'];
 
 Bun.serve({
-  port: 3003,
+  port: 3006,
   async fetch(req) {
     const origin = req.headers.get('origin');
 
