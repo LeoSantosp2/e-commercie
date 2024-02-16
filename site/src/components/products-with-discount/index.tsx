@@ -1,7 +1,16 @@
 import { IoIosShirt } from 'react-icons/io';
 import { PiPantsFill } from 'react-icons/pi';
-import { GiLargeDress, GiMonclerJacket } from 'react-icons/gi';
+import {
+  GiClothes,
+  GiConverseShoe,
+  GiLargeDress,
+  GiMonclerJacket,
+  GiSkirt,
+  GiUnderwearShorts,
+  GiWool,
+} from 'react-icons/gi';
 import { useState, useEffect } from 'react';
+import { LiaShoePrintsSolid } from 'react-icons/lia';
 
 import { ProductsProps } from '../../types/products-props';
 
@@ -9,7 +18,7 @@ const ProductsWithDiscountComponent = () => {
   const [products, setProducts] = useState<ProductsProps[]>([]);
 
   const fetchDatas = async () => {
-    const response = await fetch('http://localhost:3000/api/products');
+    const response = await fetch('http://localhost:3005/api/products');
 
     const data = await response.json();
 
@@ -39,7 +48,9 @@ const ProductsWithDiscountComponent = () => {
           >
             <div className="w-72 h-full p-5 rounded-lg bg-tertiary dark:text-secondary text-justify shadow-lg">
               <div className="w-20 h-20 mx-auto rounded-full  justify-center items-center">
-                {product.category === 'camisetas' ? (
+                {product.category === 'camisetas' ||
+                product.category === 'camisas' ||
+                product.category === 'blusas' ? (
                   <IoIosShirt size={70} color="#121212" />
                 ) : null}
 
@@ -53,6 +64,31 @@ const ProductsWithDiscountComponent = () => {
 
                 {product.category === 'jaquetas' ? (
                   <GiMonclerJacket size={70} color="#121212" />
+                ) : null}
+
+                {product.category === 'pijamas' ? (
+                  <GiClothes size={70} color="#121212" />
+                ) : null}
+
+                {product.category === 'sapatos' ? (
+                  <LiaShoePrintsSolid size={70} color="#121212" />
+                ) : null}
+
+                {product.category === 'tênis' ? (
+                  <GiConverseShoe size={70} color="#121212" />
+                ) : null}
+
+                {product.category === 'saias' ? (
+                  <GiSkirt size={70} color="#121212" />
+                ) : null}
+
+                {product.category === 'shorts' ||
+                product.category === 'bermudas' ? (
+                  <GiUnderwearShorts size={70} color="#121212" />
+                ) : null}
+
+                {product.category === 'moletoms' ? (
+                  <GiWool size={70} color="#121212" />
                 ) : null}
               </div>
 

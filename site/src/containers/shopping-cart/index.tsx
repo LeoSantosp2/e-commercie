@@ -1,71 +1,82 @@
 import { IoIosClose, IoIosShirt } from 'react-icons/io';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { FaTrash } from 'react-icons/fa';
 
 import HeaderComponent from '../../components/header';
 
 import { ProductProps } from '../../types/product-props';
+import { CupomProps } from '../../types/cupom-props';
 
 const ShoppingCartPage = () => {
   const [products, setProduct] = useState<ProductProps[]>([]);
   const [subTotal, setSubTotal] = useState(0);
   const [tot, setTot] = useState(0);
-  const [insertCupon, setInsertCupon] = useState('');
-  const [cuponFiltered, setCuponFiltered] = useState<
-    { id: number; cuponName: string; discountValue: number }[]
-  >([]);
-
-  const cupons = [
-    {
-      id: 1,
-      cuponName: 'cupon-01',
-      discountValue: 5.75,
-    },
-
-    {
-      id: 2,
-      cuponName: 'cupon-02',
-      discountValue: 9.77,
-    },
-
-    {
-      id: 3,
-      cuponName: 'cupon-03',
-      discountValue: 10.4,
-    },
-  ];
+  const [insertCupom, setInsertCupom] = useState('');
+  const [cupomFiltered, setCupomFiltered] = useState<CupomProps[]>([]);
 
   const handleDeleteProduct = (id: number) => {
     const datas = products.filter((product) => product.id !== id);
+    const newTot = products.filter((product) => product.id === id);
 
     localStorage.setItem('shopping-cart', JSON.stringify(datas));
 
     setProduct(datas);
 
     toast.success('Produto excluido com sucesso.');
+
+    let subTot = 0;
+
+    datas.forEach((product: ProductProps) => {
+      subTot += product.price;
+    });
+
+    setSubTotal(subTot);
+    setTot(tot - newTot[0].price);
   };
 
-  const handleAddCupon = () => {
-    const newCuponFiltered =
-      insertCupon.length > 0
-        ? cupons.filter((product) => product.cuponName.includes(insertCupon))
+  const handleAddCupon = async () => {
+    const response = await fetch('http://localhost:3005/api/cupons');
+
+    const data = await response.json();
+
+    const newCupomFiltered =
+      insertCupom.length > 0
+        ? data.data.filter((cupom: CupomProps) =>
+            cupom.cupom_name.includes(insertCupom.toUpperCase()),
+          )
         : [];
 
-    setCuponFiltered([...cuponFiltered, newCuponFiltered[0]]);
-    setInsertCupon('');
+    if (newCupomFiltered.length === 0) {
+      return toast.error('Cupom não existe.');
+    }
 
-    setTot(tot - newCuponFiltered[0].discountValue);
+    setCupomFiltered([...cupomFiltered, newCupomFiltered[0]]);
+    setInsertCupom('');
+
+    setTot(tot - newCupomFiltered[0].cupom_value);
   };
 
   const deleteAllProducts = () => {
     setProduct([]);
     setSubTotal(0);
     setTot(0);
-    setCuponFiltered([]);
+    setCupomFiltered([]);
 
     localStorage.removeItem('shopping-cart');
 
     toast.success('Conteúdo do carrinho excluido com sucesso.');
+  };
+
+  const handleDeleteCupom = (id: string) => {
+    const newCupom = cupomFiltered.filter((cupom) => cupom.id !== id);
+    const newTot = cupomFiltered.filter((cupom) => cupom.id === id);
+
+    console.log(newTot);
+
+    setTot(tot + newTot[0].cupom_value);
+
+    setCupomFiltered(newCupom);
   };
 
   useEffect(() => {
@@ -151,21 +162,26 @@ const ShoppingCartPage = () => {
 
             <input
               type="text"
-              value={insertCupon}
-              onChange={(e) => setInsertCupon(e.target.value)}
+              value={insertCupom}
+              onChange={(e) => setInsertCupom(e.target.value)}
               className="w-44 h-7 px-2 rounded-lg outline-none bg-primary text-secondary border"
             />
           </div>
 
           <div>
-            {cuponFiltered.map((cupon) => (
-              <p key={cupon.id} className="flex justify-between items-center">
-                {cupon.cuponName}{' '}
-                <span>
-                  {cupon.discountValue.toLocaleString('pt-BR', {
+            {cupomFiltered.map((cupom) => (
+              <p key={cupom.id} className="flex justify-between items-center">
+                {cupom.cupom_name}{' '}
+                <span className="flex items-center">
+                  {cupom.cupom_value.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL',
                   })}
+
+                  <FaTrash
+                    className="ml-2 hover:opacity-80 transition-all cursor-pointer"
+                    onClick={() => handleDeleteCupom(cupom.id)}
+                  />
                 </span>
               </p>
             ))}
@@ -176,7 +192,7 @@ const ShoppingCartPage = () => {
               className="w-1/2 mb-2 py-1 px-2 bg-secondary text-primary dark:bg-primary dark:text-secondary rounded-lg hover:opacity-80 transition-all"
               onClick={handleAddCupon}
             >
-              Adicionar Cupon
+              Adicionar Cupom
             </button>
 
             <button className="w-1/2 mb-2 py-1 px-2 bg-secondary text-primary dark:bg-primary dark:text-secondary rounded-lg hover:opacity-80 transition-all">

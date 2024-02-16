@@ -1,10 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import Cookies from 'js-cookie';
 import { IoIosMoon, IoIosSearch, IoIosShirt } from 'react-icons/io';
 import { IoSunny } from 'react-icons/io5';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { PiPantsFill } from 'react-icons/pi';
+import {
+  GiClothes,
+  GiConverseShoe,
+  GiLargeDress,
+  GiMonclerJacket,
+  GiSkirt,
+  GiUnderwearShorts,
+  GiWool,
+} from 'react-icons/gi';
+import { LiaShoePrintsSolid } from 'react-icons/lia';
 
 import FooterComponent from '../../components/footer';
 import RecentsProductsComponent from '../../components/recents-products';
@@ -13,21 +25,30 @@ import EmphasisComponent from '../../components/emphasis';
 
 import { ProductsProps } from '../../types/products-props';
 
+import { isLoggedIn } from '../../utils/isLoggedIn';
+
 const HomePage = () => {
   const [searchProduct, setSearchProduct] = useState('');
   const [select, setSelect] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [products, setProducts] = useState<ProductsProps[]>([]);
 
   const { theme, setTheme } = useTheme();
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
 
   const fetchDatas = async () => {
-    const response = await fetch('http://localhost:3000/api/products');
+    const response = await fetch('http://localhost:3005/api/products');
 
     const data = await response.json();
 
     setProducts(data.data);
+  };
+
+  const handleLogout = () => {
+    Cookies.remove('tokenAuth');
+
+    toast.success('Logout efetuado com sucesso.');
+
+    refresh();
   };
 
   useEffect(() => {
@@ -66,11 +87,13 @@ const HomePage = () => {
             onChange={(e) => handleSelect(e.target.value)}
           >
             <option value="categorias">Categorias</option>
+            <option value="bermudas">Bermudas</option>
             <option value="blusas">Blusas</option>
             <option value="calças">Calças</option>
             <option value="camisas">Camisas</option>
             <option value="camisetas">Camisetas</option>
             <option value="jaquetas">Jaquetas</option>
+            <option value="moletoms">Moletoms</option>
             <option value="pijamas">Pijamas</option>
             <option value="saias">Saias</option>
             <option value="sapatos">Sapatos</option>
@@ -79,7 +102,7 @@ const HomePage = () => {
             <option value="vestidos">Vestidos</option>
           </select>
 
-          {isLoggedIn ? (
+          {isLoggedIn() ? (
             <a href="/minha-lista" className="hover:opacity-80 transition-all">
               Minha Lista
             </a>
@@ -89,18 +112,22 @@ const HomePage = () => {
         <div className="w-screen flex justify-end items-center">
           {theme === 'light' ? (
             <button onClick={() => setTheme('dark')}>
-              <IoIosMoon color="#121212" size={24} className="cursor-pointer" />
+              <IoIosMoon
+                color="#121212"
+                size={24}
+                className="cursor-pointer hover:opacity-80 transition-all"
+              />
             </button>
           ) : (
             <IoSunny
               color="#F2F2F2"
               size={24}
-              className="cursor-pointer"
+              className="cursor-pointer hover:opacity-80 transition-all"
               onClick={() => setTheme('light')}
             />
           )}
 
-          {isLoggedIn ? (
+          {isLoggedIn() ? (
             <a
               href="/carrinho"
               className="mx-4 hover:opacity-80 transition-all"
@@ -116,8 +143,11 @@ const HomePage = () => {
             </a>
           )}
 
-          {isLoggedIn ? (
-            <button className="w-28 h-8 bg-secondary dark:bg-primary dark:text-secondary text-primary rounded-lg flex justify-center items-center hover:opacity-80 transition-all">
+          {isLoggedIn() ? (
+            <button
+              className="w-28 h-8 bg-secondary dark:bg-primary dark:text-secondary text-primary rounded-lg flex justify-center items-center hover:opacity-80 transition-all"
+              onClick={handleLogout}
+            >
               Logout
             </button>
           ) : (
@@ -158,7 +188,59 @@ const HomePage = () => {
                 >
                   <p className="flex justify-center items-center font-semibold">
                     {' '}
-                    <IoIosShirt size={32} className="mr-2" />
+                    {product.category === 'camisetas' ||
+                    product.category === 'blusas' ||
+                    product.category === 'camisas' ? (
+                      <IoIosShirt size={32} color="#121212" className="mr-2" />
+                    ) : null}
+                    {product.category === 'calças' ? (
+                      <PiPantsFill size={32} color="#121212" className="mr-2" />
+                    ) : null}
+                    {product.category === 'vestidos' ? (
+                      <GiLargeDress
+                        size={32}
+                        color="#121212"
+                        className="mr-2"
+                      />
+                    ) : null}
+                    {product.category === 'jaquetas' ? (
+                      <GiMonclerJacket
+                        size={32}
+                        color="#121212"
+                        className="mr-2"
+                      />
+                    ) : null}
+                    {product.category === 'pijamas' ? (
+                      <GiClothes size={32} color="#121212" className="mr-2" />
+                    ) : null}
+                    {product.category === 'sapatos' ? (
+                      <LiaShoePrintsSolid
+                        size={32}
+                        color="#121212"
+                        className="mr-2"
+                      />
+                    ) : null}
+                    {product.category === 'tênis' ? (
+                      <GiConverseShoe
+                        size={32}
+                        color="#121212"
+                        className="mr-2"
+                      />
+                    ) : null}
+                    {product.category === 'saias' ? (
+                      <GiSkirt size={32} color="#121212" className="mr-2" />
+                    ) : null}
+                    {product.category === 'shorts' ||
+                    product.category === 'bermudas' ? (
+                      <GiUnderwearShorts
+                        size={32}
+                        color="#121212"
+                        className="mr-2"
+                      />
+                    ) : null}
+                    {product.category === 'moletoms' ? (
+                      <GiWool size={32} color="#121212" className="mr-2" />
+                    ) : null}
                     {product.product_name}
                   </p>{' '}
                   <p>
@@ -174,7 +256,7 @@ const HomePage = () => {
         </div>
 
         <div className="w-full">
-          {isLoggedIn ? (
+          {isLoggedIn() ? (
             <RecentsProductsComponent />
           ) : (
             <ProductsWithDiscountComponent />
@@ -182,7 +264,7 @@ const HomePage = () => {
         </div>
 
         <div className="mt-40 mb-40">
-          {isLoggedIn ? <ProductsWithDiscountComponent /> : null}
+          {isLoggedIn() ? <ProductsWithDiscountComponent /> : null}
         </div>
 
         <EmphasisComponent />

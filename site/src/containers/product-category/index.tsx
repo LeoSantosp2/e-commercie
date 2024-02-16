@@ -1,5 +1,16 @@
-import { IoIosShirt } from 'react-icons/io';
 import { useEffect, useState } from 'react';
+import {
+  GiClothes,
+  GiConverseShoe,
+  GiUnderwearShorts,
+  GiWool,
+  GiMonclerJacket,
+  GiLargeDress,
+  GiSkirt,
+} from 'react-icons/gi';
+import { LiaShoePrintsSolid } from 'react-icons/lia';
+import { FaTshirt } from 'react-icons/fa';
+import { PiPantsFill } from 'react-icons/pi';
 
 import HeaderComponent from '../../components/header';
 
@@ -10,7 +21,7 @@ const ProductsPage = ({ searchParams }: { searchParams: string | null }) => {
 
   const fetchProducts = async () => {
     const response = await fetch(
-      `http://localhost:3000/api/products?category=${searchParams}`,
+      `http://localhost:3005/api/products?category=${searchParams}`,
     );
 
     const data = await response.json();
@@ -48,7 +59,47 @@ const ProductsPage = ({ searchParams }: { searchParams: string | null }) => {
             >
               <div className="w-72 h-96 p-5 rounded-lg bg-tertiary dark:text-secondary text-justify shadow-lg relative">
                 <div className="w-20 h-20 mx-auto rounded-full flex justify-center items-center">
-                  <IoIosShirt size={70} color="#121212" />
+                  {searchParams === 'pijamas' ? (
+                    <GiClothes size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'sapatos' ? (
+                    <LiaShoePrintsSolid size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'tênis' ? (
+                    <GiConverseShoe size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'moletoms' ? (
+                    <GiWool size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'shorts' || searchParams === 'bermudas' ? (
+                    <GiUnderwearShorts size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'blusas' ||
+                  searchParams === 'camisas' ||
+                  searchParams === 'camisetas' ? (
+                    <FaTshirt size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'jaquetas' ? (
+                    <GiMonclerJacket size={70} color="#121212" />
+                  ) : null}
+
+                  {product.category === 'vestidos' ? (
+                    <GiLargeDress size={70} color="#121212" />
+                  ) : null}
+
+                  {product.category === 'saias' ? (
+                    <GiSkirt size={70} color="#121212" />
+                  ) : null}
+
+                  {product.category === 'calças' ? (
+                    <PiPantsFill size={70} color="#121212" className="mr-2" />
+                  ) : null}
                 </div>
 
                 <p className="text-center my-5 font-semibold">
@@ -79,7 +130,47 @@ const ProductsPage = ({ searchParams }: { searchParams: string | null }) => {
             >
               <div className="w-72 h-96 p-5 rounded-lg bg-tertiary dark:text-secondary text-justify shadow-lg relative">
                 <div className="w-20 h-20 mx-auto rounded-full flex justify-center items-center">
-                  <IoIosShirt size={70} color="#121212" />
+                  {searchParams === 'pijamas' ? (
+                    <GiClothes size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'sapatos' ? (
+                    <LiaShoePrintsSolid size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'tênis' ? (
+                    <GiConverseShoe size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'moletoms' ? (
+                    <GiWool size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'shorts' || searchParams === 'bermudas' ? (
+                    <GiUnderwearShorts size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'blusas' ||
+                  searchParams === 'camisas' ||
+                  searchParams === 'camisetas' ? (
+                    <FaTshirt size={70} color="#121212" />
+                  ) : null}
+
+                  {searchParams === 'jaquetas' ? (
+                    <GiMonclerJacket size={70} color="#121212" />
+                  ) : null}
+
+                  {product.category === 'vestidos' ? (
+                    <GiLargeDress size={70} color="#121212" />
+                  ) : null}
+
+                  {product.category === 'saias' ? (
+                    <GiSkirt size={70} color="#121212" />
+                  ) : null}
+
+                  {product.category === 'calças' ? (
+                    <PiPantsFill size={70} color="#121212" className="mr-2" />
+                  ) : null}
                 </div>
 
                 <p className="text-center my-5 font-semibold">

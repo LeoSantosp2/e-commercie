@@ -14,10 +14,22 @@ const FooterComponent = () => {
           <h1 className="m-5 text-2xl">Redes Sociais</h1>
 
           <nav className="flex">
-            <FaFacebookSquare size={24} className="ml-4 cursor-pointer" />
-            <FaInstagram size={24} className="ml-4 cursor-pointer" />
-            <BsTwitterX size={24} className="ml-4 cursor-pointer" />
-            <FaLinkedin size={24} className="ml-4 cursor-pointer" />
+            <FaFacebookSquare
+              size={24}
+              className="ml-4 cursor-pointer hover:opacity-80 transition-all"
+            />
+            <FaInstagram
+              size={24}
+              className="ml-4 cursor-pointer hover:opacity-80 transition-all"
+            />
+            <BsTwitterX
+              size={24}
+              className="ml-4 cursor-pointer hover:opacity-80 transition-all"
+            />
+            <FaLinkedin
+              size={24}
+              className="ml-4 cursor-pointer hover:opacity-80 transition-all"
+            />
           </nav>
         </div>
 

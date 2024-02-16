@@ -1,16 +1,24 @@
 'use client';
 
+import Cookies from 'js-cookie';
 import {
   GiPadlock,
   GiLargeDress,
-  GiMonclerJacket,
   GiSkirt,
   GiWool,
+  GiMonclerJacket,
+  GiUnderwearShorts,
+  GiConverseShoe,
+  GiClothes,
 } from 'react-icons/gi';
 import { IoIosShirt } from 'react-icons/io';
 import { PiPantsFill } from 'react-icons/pi';
 import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
+import { LiaShoePrintsSolid } from 'react-icons/lia';
+import ReactStarts from 'react-stars';
+import { FaStar } from 'react-icons/fa';
+import { CgProfile } from 'react-icons/cg';
 
 import HeaderComponent from '../../components/header';
 
@@ -22,7 +30,7 @@ const ProductPage = ({ id }: ProductId) => {
   const [product, setProduct] = useState<ProductsProps[]>([]);
 
   const fetchDatas = async () => {
-    const response = await fetch(`http://localhost:3000/api/products/${id}`);
+    const response = await fetch(`http://localhost:3005/api/products/${id}`);
 
     const data = await response.json();
 
@@ -30,6 +38,10 @@ const ProductPage = ({ id }: ProductId) => {
   };
 
   const handleAddList = () => {
+    const token = Cookies.get('tokenAuth');
+
+    if (!token) return toast.error('Necessário efetua login.');
+
     const response = localStorage.getItem('my-list');
 
     const datas = response ? JSON.parse(response) : [];
@@ -42,6 +54,10 @@ const ProductPage = ({ id }: ProductId) => {
   };
 
   const handleAddShoppingCart = () => {
+    const token = Cookies.get('tokenAuth');
+
+    if (!token) return toast.error('Necessário efetua login.');
+
     const response = localStorage.getItem('shopping-cart');
 
     const datas = response ? JSON.parse(response) : [];
@@ -68,6 +84,8 @@ const ProductPage = ({ id }: ProductId) => {
 
   return (
     <>
+      <title>Produto</title>
+
       <HeaderComponent />
 
       <main className="w-full">
@@ -90,7 +108,7 @@ const ProductPage = ({ id }: ProductId) => {
               ) : null}
 
               {product.category === 'moletoms' ? (
-                <GiMonclerJacket size={72} color="#121212" />
+                <GiWool size={72} color="#121212" />
               ) : null}
 
               {product.category === 'saias' ? (
@@ -98,7 +116,28 @@ const ProductPage = ({ id }: ProductId) => {
               ) : null}
 
               {product.category === 'blusas' ? (
-                <GiWool size={70} color="#121212" />
+                <IoIosShirt size={70} color="#121212" />
+              ) : null}
+
+              {product.category === 'jaquetas' ? (
+                <GiMonclerJacket size={70} color="#121212" />
+              ) : null}
+
+              {product.category === 'shorts' ||
+              product.category === 'bermudas' ? (
+                <GiUnderwearShorts size={70} color="#121212" />
+              ) : null}
+
+              {product.category === 'tênis' ? (
+                <GiConverseShoe size={70} color="#121212" />
+              ) : null}
+
+              {product.category === 'sapatos' ? (
+                <LiaShoePrintsSolid size={70} color="#121212" />
+              ) : null}
+
+              {product.category === 'pijamas' ? (
+                <GiClothes size={70} color="#121212" />
               ) : null}
             </div>
           ))}
@@ -171,6 +210,234 @@ const ProductPage = ({ id }: ProductId) => {
           </div>
         </div>
       </main>
+
+      <aside className="w-full mt-40">
+        <div>
+          <h1 className="mx-8 text-3xl">Avaliar produto</h1>
+
+          <div className="w-full h-96 flex items-center">
+            <div className="w-1/5 h-full flex justify-center items-center">
+              <ReactStarts count={5} size={32} />
+            </div>
+
+            <div className="w-4/5 h-full flex justify-center items-center">
+              <form action="#" className="flex flex-col">
+                <textarea
+                  cols={100}
+                  rows={7}
+                  className="p-2 outline-none rounded-lg bg-primary text-secondary border"
+                ></textarea>
+
+                <button className="w-full h-10 mt-2 m-auto rounded-lg bg-primary text-secondary hover:opacity-80 transition-all shadow-lg border">
+                  Enviar comentário
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h1 className="mx-8 text-3xl">Avaliações</h1>
+
+          <div className="w-full flex relative">
+            <div className="w-72 h-96 border rounded-lg absolute top-4 left-20">
+              <h2 className="m-4 text-2xl font-semibold">Nota: 4.2</h2>
+
+              <div className="px-2 w-full flex items-center">
+                <div className="mr-20">
+                  <FaStar color="#FDD700" />
+                </div>
+
+                <p className="mr-6">1 estrela</p>
+
+                <p className="text-xs">5 avaliações</p>
+              </div>
+
+              <div className="px-2 w-full flex items-center">
+                <div className="flex mr-16">
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                </div>
+
+                <p className="mr-4">2 estrelas</p>
+
+                <p className="text-xs">10 avaliações</p>
+              </div>
+
+              <div className="px-2 w-full flex items-center">
+                <div className="flex mr-12">
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                </div>
+
+                <p className="mr-4">3 estrelas</p>
+
+                <p className="text-xs">15 avaliações</p>
+              </div>
+
+              <div className="px-2 w-full flex items-center">
+                <div className="flex mr-8">
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                </div>
+
+                <p className="mr-4">4 estrelas</p>
+
+                <p className="text-xs">20 avaliações</p>
+              </div>
+
+              <div className="px-2 w-full flex items-center">
+                <div className="flex mr-4">
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                  <FaStar color="#FDD700" />
+                </div>
+
+                <p className="mr-4">5 estrelas</p>
+
+                <p className="text-xs">25 avaliações</p>
+              </div>
+            </div>
+
+            <div className="w-2/4 absolute top-4 left-2/3 -translate-x-2/3">
+              <div className="mb-10">
+                <div>
+                  <div className="flex items-center mb-2">
+                    <CgProfile size={32} />
+                    <h1 className="ml-2 text-2xl font-semibold">
+                      Lorem, ipsum dolor.
+                    </h1>
+                  </div>
+
+                  <div className="flex mb-4">
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#CCCCCC" />
+                    <FaStar size={12} color="#CCCCCC" />
+                    <FaStar size={12} color="#CCCCCC" />
+                    <FaStar size={12} color="#CCCCCC" />
+                  </div>
+                </div>
+
+                <p className="text-justify">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+                  qui doloremque, asperiores facilis ipsa itaque ea vel
+                  consequatur et placeat id amet incidunt sed vitae accusamus,
+                  assumenda sint saepe facere.
+                </p>
+              </div>
+
+              <div className="mb-10">
+                <div>
+                  <div className="flex items-center mb-2">
+                    <CgProfile size={32} />
+                    <h1 className="ml-2 text-2xl font-semibold">
+                      Lorem, ipsum dolor.
+                    </h1>
+                  </div>
+
+                  <div className="flex mb-4">
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#CCCCCC" />
+                    <FaStar size={12} color="#CCCCCC" />
+                    <FaStar size={12} color="#CCCCCC" />
+                  </div>
+                </div>
+
+                <p className="text-justify">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+                  qui doloremque, asperiores facilis ipsa itaque ea vel
+                  consequatur et placeat id amet incidunt sed vitae accusamus,
+                  assumenda sint saepe facere.
+                </p>
+              </div>
+
+              <div className="mb-10">
+                <div>
+                  <div className="flex items-center mb-2">
+                    <CgProfile size={32} />
+                    <h1 className="ml-2 text-2xl font-semibold">
+                      Lorem, ipsum dolor.
+                    </h1>
+                  </div>
+
+                  <div className="flex mb-4">
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#CCCCCC" />
+                    <FaStar size={12} color="#CCCCCC" />
+                  </div>
+                </div>
+
+                <p className="text-justify">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+                  qui doloremque, asperiores facilis ipsa itaque ea vel
+                  consequatur et placeat id amet incidunt sed vitae accusamus,
+                  assumenda sint saepe facere.
+                </p>
+              </div>
+
+              <div className="mb-10">
+                <div>
+                  <div className="flex items-center mb-2">
+                    <CgProfile size={32} />
+                    <h1 className="ml-2 text-2xl font-semibold">
+                      Lorem, ipsum dolor.
+                    </h1>
+                  </div>
+
+                  <div className="flex mb-4">
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#CCCCCC" />
+                  </div>
+                </div>
+
+                <p className="text-justify">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+                  qui doloremque, asperiores facilis ipsa itaque ea vel
+                  consequatur et placeat id amet incidunt sed vitae accusamus,
+                  assumenda sint saepe facere.
+                </p>
+              </div>
+
+              <div className="mb-10">
+                <div>
+                  <div className="flex items-center mb-2">
+                    <CgProfile size={32} />
+                    <h1 className="ml-2 text-2xl font-semibold">
+                      Lorem, ipsum dolor.
+                    </h1>
+                  </div>
+
+                  <div className="flex mb-4">
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                    <FaStar size={12} color="#FDD700" />
+                  </div>
+                </div>
+
+                <p className="text-justify">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+                  qui doloremque, asperiores facilis ipsa itaque ea vel
+                  consequatur et placeat id amet incidunt sed vitae accusamus,
+                  assumenda sint saepe facere.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
     </>
   );
 };
