@@ -14,18 +14,18 @@ import { LiaShoePrintsSolid } from 'react-icons/lia';
 
 import { ProductsProps } from '../../types/products-props';
 
+import { apiUrl } from '../../utils/api-url';
+
 const ProductsWithDiscountComponent = () => {
   const [products, setProducts] = useState<ProductsProps[]>([]);
 
   const fetchDatas = async () => {
-    const response = await fetch('http://localhost:3005/api/products');
-
-    const data = await response.json();
+    const datas = await apiUrl('/api/products');
 
     const newProducts = [];
 
     for (let i = 0; i < 3; i++) {
-      newProducts.push(data.data[Math.floor(Math.random() * data.data.length)]);
+      newProducts.push(datas[Math.floor(Math.random() * datas.length)]);
     }
 
     setProducts(newProducts);

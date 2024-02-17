@@ -7,6 +7,7 @@ import HeaderComponent from '../../components/header';
 
 import { ProductProps } from '../../types/product-props';
 import { CupomProps } from '../../types/cupom-props';
+import { apiUrl } from '@/utils/api-url';
 
 const ShoppingCartPage = () => {
   const [products, setProduct] = useState<ProductProps[]>([]);
@@ -36,13 +37,11 @@ const ShoppingCartPage = () => {
   };
 
   const handleAddCupon = async () => {
-    const response = await fetch('http://localhost:3005/api/cupons');
-
-    const data = await response.json();
+    const datas = await apiUrl('/api/cupons');
 
     const newCupomFiltered =
       insertCupom.length > 0
-        ? data.data.filter((cupom: CupomProps) =>
+        ? datas.filter((cupom: CupomProps) =>
             cupom.cupom_name.includes(insertCupom.toUpperCase()),
           )
         : [];

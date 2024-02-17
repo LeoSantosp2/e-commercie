@@ -26,6 +26,7 @@ import EmphasisComponent from '../../components/emphasis';
 import { ProductsProps } from '../../types/products-props';
 
 import { isLoggedIn } from '../../utils/isLoggedIn';
+import { apiUrl } from '../../utils/api-url';
 
 const HomePage = () => {
   const [searchProduct, setSearchProduct] = useState('');
@@ -36,11 +37,9 @@ const HomePage = () => {
   const { push, refresh } = useRouter();
 
   const fetchDatas = async () => {
-    const response = await fetch('http://localhost:3005/api/products');
+    const datas = await apiUrl('/api/products');
 
-    const data = await response.json();
-
-    setProducts(data.data);
+    setProducts(datas);
   };
 
   const handleLogout = () => {

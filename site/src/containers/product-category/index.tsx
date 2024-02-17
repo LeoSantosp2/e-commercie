@@ -16,17 +16,15 @@ import HeaderComponent from '../../components/header';
 
 import { ProductsProps } from '../../types/products-props';
 
+import { apiUrl } from '../../utils/api-url';
+
 const ProductsPage = ({ searchParams }: { searchParams: string | null }) => {
   const [products, setProducts] = useState<ProductsProps[]>([]);
 
   const fetchProducts = async () => {
-    const response = await fetch(
-      `http://localhost:3005/api/products?category=${searchParams}`,
-    );
+    const datas = await apiUrl(`/api/products?category=${searchParams}`);
 
-    const data = await response.json();
-
-    setProducts(data.data);
+    setProducts(datas);
   };
 
   useEffect(() => {

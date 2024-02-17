@@ -1,6 +1,7 @@
 'use client';
 
 import Cookies from 'js-cookie';
+import ReactStarts from 'react-stars';
 import {
   GiPadlock,
   GiLargeDress,
@@ -16,7 +17,6 @@ import { PiPantsFill } from 'react-icons/pi';
 import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
 import { LiaShoePrintsSolid } from 'react-icons/lia';
-import ReactStarts from 'react-stars';
 import { FaStar } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
 
@@ -25,16 +25,16 @@ import HeaderComponent from '../../components/header';
 import { ProductId } from '../../types/product-props';
 import { ProductsProps } from '../../types/products-props';
 
+import { apiUrl } from '../../utils/api-url';
+
 const ProductPage = ({ id }: ProductId) => {
   const [qtd, setQtd] = useState('1');
   const [product, setProduct] = useState<ProductsProps[]>([]);
 
   const fetchDatas = async () => {
-    const response = await fetch(`http://localhost:3005/api/products/${id}`);
+    const datas = await apiUrl(`/api/products/${id}`);
 
-    const data = await response.json();
-
-    setProduct(data.data);
+    setProduct(datas);
   };
 
   const handleAddList = () => {
