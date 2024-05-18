@@ -69,7 +69,7 @@ Here are the products that you added to `My List`.
 
 ### Other Features
 
-there are other features such as: `Register`, `Login` and `Dark and Light Theme`.
+There are other features such as: `Register`, `Login` and `Dark and Light Theme`.
 
 ## Final Considerations
 
