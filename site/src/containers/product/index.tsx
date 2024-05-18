@@ -40,7 +40,7 @@ const ProductPage = ({ id }: ProductId) => {
   const handleAddList = () => {
     const token = Cookies.get('tokenAuth');
 
-    if (!token) return toast.error('Necessário efetua login.');
+    if (!token) return toast.error('Necessário efetuar login.');
 
     const response = localStorage.getItem('my-list');
 
@@ -56,7 +56,7 @@ const ProductPage = ({ id }: ProductId) => {
   const handleAddShoppingCart = () => {
     const token = Cookies.get('tokenAuth');
 
-    if (!token) return toast.error('Necessário efetua login.');
+    if (!token) return toast.error('Necessário efetuar login.');
 
     const response = localStorage.getItem('shopping-cart');
 
@@ -95,7 +95,8 @@ const ProductPage = ({ id }: ProductId) => {
               key={product.id}
               className="size-96 rounded-lg flex justify-center items-center bg-tertiary"
             >
-              {product.category === 'camisetas' ? (
+              {product.category === 'camisetas' ||
+              product.category === 'camisas' ? (
                 <IoIosShirt size={72} color="#121212" />
               ) : null}
 
